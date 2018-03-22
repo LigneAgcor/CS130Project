@@ -262,50 +262,6 @@ public class Reader
 					i++;
 				}
 			}
-			// ------------ COMMA
-			if (i < a.length)
-			{
-				if (a[i] == ',')
-				{
-					tokens.add("COMMA");
-					lexemes.add(",");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------ PERIOD
-			if (i < a.length)
-			{
-				if (a[i] == '.')
-				{
-					tokens.add("PERIOD");
-					lexemes.add(".");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------ DQUOTE
-			if (i < a.length)
-			{
-				if (a[i] == '\"')
-				{
-					tokens.add("DQUOTE");
-					lexemes.add("\"");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------ QUOTE
-			if (i < a.length)
-			{
-				if (a[i] == '\'')
-				{
-					tokens.add("QUOTE");
-					lexemes.add("\'");
-					worked = true;
-					i++;
-				}
-			}
 			if (!worked)
 			{
 				i++;
@@ -361,7 +317,7 @@ public class Reader
 	
 	public void basicTest()
 	{
-		String s = "+/:<\'\"()/+**-->=,.*%";
+		String s = "+/:<()/+**-->*%";
 		read(s.toCharArray());
 		printTest();
 	}

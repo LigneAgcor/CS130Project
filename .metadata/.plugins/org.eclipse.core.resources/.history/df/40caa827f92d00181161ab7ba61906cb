@@ -218,94 +218,6 @@ public class Reader
 					i++;
 				}
 			}
-			// -------------- MODULO
-			if (i < a.length)
-			{
-				if (a[i] == '%')
-				{
-					tokens.add("MODULO");
-					lexemes.add("%");
-					worked = true;
-					i++;
-				}
-			}
-			// -------------- LPAREN
-			if (i < a.length)
-			{
-				if (a[i] == '(')
-				{
-					tokens.add("LPAREN");
-					lexemes.add("(");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------- RPAREN
-			if (i < a.length)
-			{
-				if (a[i] == ')')
-				{
-					tokens.add("RPAREN");
-					lexemes.add(")");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------- EQUALS
-			if (i < a.length)
-			{
-				if (a[i] == '=')
-				{
-					tokens.add("EQUALS");
-					lexemes.add("=");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------ COMMA
-			if (i < a.length)
-			{
-				if (a[i] == ',')
-				{
-					tokens.add("COMMA");
-					lexemes.add(",");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------ PERIOD
-			if (i < a.length)
-			{
-				if (a[i] == '.')
-				{
-					tokens.add("PERIOD");
-					lexemes.add(".");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------ DQUOTE
-			if (i < a.length)
-			{
-				if (a[i] == '\"')
-				{
-					tokens.add("DQUOTE");
-					lexemes.add("\"");
-					worked = true;
-					i++;
-				}
-			}
-			// ------------ QUOTE
-			if (i < a.length)
-			{
-				if (a[i] == '\'')
-				{
-					tokens.add("QUOTE");
-					lexemes.add("\'");
-					worked = true;
-					i++;
-				}
-			}
 			if (!worked)
 			{
 				i++;
@@ -361,7 +273,7 @@ public class Reader
 	
 	public void basicTest()
 	{
-		String s = "+/:<\'\"()/+**-->=,.*%";
+		String s = "+/:</+**-->*";
 		read(s.toCharArray());
 		printTest();
 	}

@@ -295,17 +295,6 @@ public class Reader
 					i++;
 				}
 			}
-			// ------------ QUOTE
-			if (i < a.length)
-			{
-				if (a[i] == '\'')
-				{
-					tokens.add("QUOTE");
-					lexemes.add("\'");
-					worked = true;
-					i++;
-				}
-			}
 			if (!worked)
 			{
 				i++;
@@ -361,7 +350,7 @@ public class Reader
 	
 	public void basicTest()
 	{
-		String s = "+/:<\'\"()/+**-->=,.*%";
+		String s = "+/:<()/+**-->*%";
 		read(s.toCharArray());
 		printTest();
 	}
