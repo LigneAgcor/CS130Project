@@ -108,6 +108,8 @@ public class Reader
 							{
 								tokens.add("TAGINDENT");
 								addString(start, i+j-1,a);
+								tokens.add("GTHAN");
+								lexemes.add(">");
 								i+=j;
 								j+=a.length;
 								done = true;
@@ -194,7 +196,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "<asd><></";
+		String s = "<></";
 		read(s.toCharArray());
 		printTest();
 	}

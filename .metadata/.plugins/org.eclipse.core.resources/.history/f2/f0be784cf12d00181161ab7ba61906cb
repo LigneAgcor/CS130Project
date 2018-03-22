@@ -108,6 +108,8 @@ public class Reader
 							{
 								tokens.add("TAGINDENT");
 								addString(start, i+j-1,a);
+								tokens.add("GTHAN");
+								lexemes.add(">");
 								i+=j;
 								j+=a.length;
 								done = true;
