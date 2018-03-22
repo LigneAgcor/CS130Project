@@ -22,7 +22,7 @@ public class Reader
 		
 		while ((currentLine = br.readLine()) != null)
 		{
-			//System.out.println(currentLine);
+			System.out.println(currentLine);
 		}
 		
 	}
@@ -48,11 +48,11 @@ public class Reader
 			{
 				//COMMENT
 				// if '<!--' is read
-				if (i+3 < a.length )//&& !worked)
+				if (i+3 < a.length && !worked)
 				{
 					if (a[i+1] == '!' && a[i+2] == '-' && a[i+3] == '-')
 					{
-						//worked = true;
+						worked = true;
 						boolean done = false; 
 						int start = i;
 						for (int j = 4; j+i < a.length; j++)
@@ -62,14 +62,14 @@ public class Reader
 								if(a[i+j] == '-' && a[i+j+1] == '-' && a[i+j+2] == '>')
 								{
 									//for testing comment detection
-									tokens.add("COMMENT");
-									addString(start, i+j+2,a);
+									//tokens.add("COMMENT");
+									//addString(start, i+j+2,a);
 									i+=j;
 									j+=a.length;
 									done = true;
 								}
 							}
-							if (!done)
+							if (i+j < a.length && !done)
 							{
 								if(j+i >= a.length-1 ) 
 								{
@@ -82,27 +82,30 @@ public class Reader
 						}
 					}
 				}
-				if (i+1 < a.length)
+				if (a[i+1] == '/' && !worked)
 				{
-					if (a[i+1] == '/')// && !worked)
+					worked = true;
+					System.out.println(a[i+1]);
+					int start = i;
+					for (int j = 2; j+i < a.length; j++)
 					{
-						int start = i;
-						for (int j = 2; j+i < a.length; j++)
+						if(a[i+j] == '>')
 						{
-							if(a[i+j] == '>')
-							{
-								tokens.add("TAGIDENT");
-								addString(start, i+j-1,a);
-								tokens.add("GTHAN");
-								lexemes.add(">");
-								i+=j;
-								j+=a.length;
-							}
+							tokens.add("TAGIDENT");
+							addString(start, i+j-1,a);
+							tokens.add("GTHAN");
+							lexemes.add(">");
+							i+=j;
+							j+=a.length;
 						}
 					}
 				}
 			}
-			i++;
+			if (!worked) 
+			{
+				worked = false'
+				i++;
+			}
 		}
 	}
 	public boolean compareSpecial(char b)
@@ -141,7 +144,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "</yaay>  -->";
+		String s = "<!--</yaay>";
 		read(s.toCharArray());
 		printTest();
 	}

@@ -22,7 +22,7 @@ public class Reader
 		
 		while ((currentLine = br.readLine()) != null)
 		{
-			//System.out.println(currentLine);
+			System.out.println(currentLine);
 		}
 		
 	}

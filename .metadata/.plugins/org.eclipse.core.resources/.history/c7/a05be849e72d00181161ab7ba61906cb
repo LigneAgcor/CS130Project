@@ -22,7 +22,7 @@ public class Reader
 		
 		while ((currentLine = br.readLine()) != null)
 		{
-			//System.out.println(currentLine);
+			System.out.println(currentLine);
 		}
 		
 	}
@@ -62,14 +62,14 @@ public class Reader
 								if(a[i+j] == '-' && a[i+j+1] == '-' && a[i+j+2] == '>')
 								{
 									//for testing comment detection
-									tokens.add("COMMENT");
-									addString(start, i+j+2,a);
+									//tokens.add("COMMENT");
+									//addString(start, i+j+2,a);
 									i+=j;
 									j+=a.length;
 									done = true;
 								}
 							}
-							if (!done)
+							if (i+j < a.length && !done)
 							{
 								if(j+i >= a.length-1 ) 
 								{
@@ -86,6 +86,7 @@ public class Reader
 				{
 					if (a[i+1] == '/')// && !worked)
 					{
+						System.out.println(a[i+1]);
 						int start = i;
 						for (int j = 2; j+i < a.length; j++)
 						{
@@ -102,7 +103,7 @@ public class Reader
 					}
 				}
 			}
-			i++;
+				i++;
 		}
 	}
 	public boolean compareSpecial(char b)
@@ -141,7 +142,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "</yaay>  -->";
+		String s = "<!--</yaay-->";
 		read(s.toCharArray());
 		printTest();
 	}

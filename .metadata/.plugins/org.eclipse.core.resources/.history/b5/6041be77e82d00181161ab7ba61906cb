@@ -22,7 +22,7 @@ public class Reader
 		
 		while ((currentLine = br.readLine()) != null)
 		{
-			//System.out.println(currentLine);
+			System.out.println(currentLine);
 		}
 		
 	}
@@ -141,7 +141,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "</yaay>  -->";
+		String s = "<!--  yaay  -->";
 		read(s.toCharArray());
 		printTest();
 	}
@@ -149,6 +149,6 @@ public class Reader
 	public static void main(String args[]) throws Exception
 	{
 		Reader a = new Reader();
-		a.tagTest();
+		a.commentTest();
 	}
 }

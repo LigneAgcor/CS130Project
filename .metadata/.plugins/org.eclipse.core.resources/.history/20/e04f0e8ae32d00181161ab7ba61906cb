@@ -22,7 +22,7 @@ public class Reader
 		
 		while ((currentLine = br.readLine()) != null)
 		{
-			//System.out.println(currentLine);
+			System.out.println(currentLine);
 		}
 		
 	}
@@ -40,28 +40,27 @@ public class Reader
 	public void read(char[] a)
 	{	
 		int i = 0;
-		boolean worked = false;
+		int counter = 0;
 		while (a.length > i+1)
 		{
-			//read <        for COMMENT, TAGIDENT, LTHAN
+			//COMMENT, TAGIDENT, LTHAN
 			if (a[i] == '<')
 			{
 				//COMMENT
 				// if '<!--' is read
-				if (i+3 < a.length )//&& !worked)
+				if (i+3 < a.length)
 				{
 					if (a[i+1] == '!' && a[i+2] == '-' && a[i+3] == '-')
 					{
-						//worked = true;
 						boolean done = false; 
 						int start = i;
 						for (int j = 4; j+i < a.length; j++)
 						{
+							//System.out.println(a[i+j] + "" +  a[i+j+1] + "" + a[i+j+2]);
 							if(i+j+2 < a.length)
 							{
 								if(a[i+j] == '-' && a[i+j+1] == '-' && a[i+j+2] == '>')
 								{
-									//for testing comment detection
 									tokens.add("COMMENT");
 									addString(start, i+j+2,a);
 									i+=j;
@@ -69,7 +68,7 @@ public class Reader
 									done = true;
 								}
 							}
-							if (!done)
+							if (i+j < a.length && !done)
 							{
 								if(j+i >= a.length-1 ) 
 								{
@@ -80,26 +79,41 @@ public class Reader
 								}
 							}
 						}
-					}
-				}
-				if (i+1 < a.length)
-				{
-					if (a[i+1] == '/')// && !worked)
-					{
-						int start = i;
-						for (int j = 2; j+i < a.length; j++)
+						
+						/*
+						
+						System.out.println(counter);
+						counter += 3;
+						//if the end comment is read
+						if(a[i+counter+1] == '-' && a[i+counter+2] == '-' && a[i+counter+3] == '>')
 						{
-							if(a[i+j] == '>')
+							i+=counter;
+							counter = 0;
+						}
+						//if comment is not yet done
+						else
+						{
+	
+							System.out.println(counter);
+							System.out.println("im called");
+							if(counter+i < a.length-1 ) 
 							{
-								tokens.add("TAGIDENT");
-								addString(start, i+j-1,a);
-								tokens.add("GTHAN");
-								lexemes.add(">");
-								i+=j;
-								j+=a.length;
+								counter++;
+							}
+							else 
+							{
+								i += counter;
+								counter = 0;
+								tokens.add("ERROR");
+								lexemes.add("**lexical error: unexpected end of file");
 							}
 						}
+						*/
 					}
+				}
+				else if (a[i+counter+1] == '/')
+				{
+					
 				}
 			}
 			i++;
@@ -139,16 +153,9 @@ public class Reader
 		printTest();
 	}
 	
-	public void tagTest()
-	{
-		String s = "</yaay>  -->";
-		read(s.toCharArray());
-		printTest();
-	}
-	
 	public static void main(String args[]) throws Exception
 	{
 		Reader a = new Reader();
-		a.tagTest();
+		a.commentTest();
 	}
 }
