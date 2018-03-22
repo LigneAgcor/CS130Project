@@ -17,17 +17,17 @@ public class Reader{
 		
 		
 		String currentLine;
-		String allRead = "";
+		String concatenated = "";
 		boolean startnewLex = true;
 		
 		while ((currentLine = br.readLine()) != null)
 		{
 			System.out.println(currentLine);
-			allRead += currentLine;
-			allRead += " ";
+			concatenated += currentLine;
+			concatenated += "\n";
 		}
 		
-		System.out.println(allRead);
+		System.out.println(concatenated);
 		
 	}
 	
