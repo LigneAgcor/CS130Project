@@ -93,7 +93,7 @@ public class Reader
 						{
 							if(a[i+j] == '>')
 							{
-								tokens.add("ENDTAGHEAD");
+								tokens.add("TAGIDENT");
 								addString(start, i+j-1,a);
 								tokens.add("GTHAN");
 								lexemes.add(">");
