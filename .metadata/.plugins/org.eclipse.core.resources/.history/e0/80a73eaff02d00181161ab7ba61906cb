@@ -101,10 +101,9 @@ public class Reader
 						boolean done = false;
 						worked = true;
 						int start = i;
-						boolean foundLetter = false; 
 						for (int j = 1; j+i < a.length; j++)
 						{
-							if(a[i+j] == '>' && foundLetter)
+							if(a[i+j] == '>')
 							{
 								tokens.add("TAGINDENT");
 								addString(start, i+j-1,a);
@@ -116,15 +115,10 @@ public class Reader
 							}
 							if (!done)
 							{
-								
 								if(j+i >= a.length-1 ) 
 								{
 									j+=a.length;
 									worked = false;
-								}
-								else
-								{
-									foundLetter = true;
 								}
 							}
 						}
@@ -138,16 +132,14 @@ public class Reader
 					i++;
 				}
 			}
-			if (i < a.length)
+			if (a[i] == '>')
 			{
-				if (a[i] == '>')
-				{
-					tokens.add("GTHAN");
-					lexemes.add(">");
-					worked = true;
-					i++;
-				}
+				tokens.add("GTHAN");
+				lexemes.add(">");
+				worked = true;
+				i++;
 			}
+			
 			if (!worked)
 			{
 				i++;
