@@ -5,7 +5,7 @@ public class Reader{
 	{
 		FileReader file = null;
 		try {
-		file = new FileReader("src\\text files\\text.txt");//"C:\\Users\\great_000\\Documents\\School\\4th year\\2nd Sem\\CS130\\Midterm Proj\\CS130Project\\CS130_Midterms\\src\\text.txt");
+		file = new FileReader("bin\textfiles\text.txt");//"C:\\Users\\great_000\\Documents\\School\\4th year\\2nd Sem\\CS130\\Midterm Proj\\CS130Project\\CS130_Midterms\\src\\text.txt");
 		}
 		catch(FileNotFoundException ae){
 			System.out.println("File not Found");
