@@ -30,7 +30,7 @@ public class Reader
 	public void addString(int start, int end, char[] a)
 	{
 		String s = "";
-		 for (int i = start; i <= end; i++)
+		 for (int i = start; i < end; i++)
 		{
 			s += a[i]; 
 		}
@@ -43,6 +43,7 @@ public class Reader
 		int counter = 0;
 		while (a.length > i+1)
 		{
+			System.out.println("hello??");
 			//COMMENT, TAGIDENT, LTHAN
 			if (a[i] == '<')
 			{
@@ -52,11 +53,9 @@ public class Reader
 				{
 					if (a[i+1] == '!' && a[i+2] == '-' && a[i+3] == '-')
 					{
-						boolean done = false; 
 						int start = i;
 						for (int j = 4; j+i < a.length; j++)
 						{
-							//System.out.println(a[i+j] + "" +  a[i+j+1] + "" + a[i+j+2]);
 							if(i+j+2 < a.length)
 							{
 								if(a[i+j] == '-' && a[i+j+1] == '-' && a[i+j+2] == '>')
@@ -64,11 +63,9 @@ public class Reader
 									tokens.add("COMMENT");
 									addString(start, i+j+2,a);
 									i+=j;
-									j+=a.length;
-									done = true;
 								}
 							}
-							if (i+j < a.length && !done)
+							if (i+j < a.length)
 							{
 								if(j+i >= a.length-1 ) 
 								{
@@ -116,7 +113,6 @@ public class Reader
 					
 				}
 			}
-			i++;
 		}
 	}
 	public boolean compareSpecial(char b)
@@ -148,7 +144,7 @@ public class Reader
 	
 	public void commentTest()
 	{
-		String s = "<!-- im a valid comment -->  <!--im invalid:((";
+		String s = "<!-- im an invalid comment -->";
 		read(s.toCharArray());
 		printTest();
 	}

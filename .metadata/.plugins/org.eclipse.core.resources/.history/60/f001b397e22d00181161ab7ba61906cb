@@ -148,7 +148,7 @@ public class Reader
 	
 	public void commentTest()
 	{
-		String s = "<!-- im a valid comment -->  <!--im invalid:((";
+		String s = "<!-- im an invalid comment -->";
 		read(s.toCharArray());
 		printTest();
 	}
