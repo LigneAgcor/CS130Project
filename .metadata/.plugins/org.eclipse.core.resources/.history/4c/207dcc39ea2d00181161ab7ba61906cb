@@ -162,7 +162,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "</yaay  -->";
+		String s = "</yaay>  -->";
 		read(s.toCharArray());
 		printTest();
 	}

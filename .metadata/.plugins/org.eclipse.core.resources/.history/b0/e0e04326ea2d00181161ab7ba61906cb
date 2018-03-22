@@ -86,7 +86,6 @@ public class Reader
 				{
 					if (a[i+1] == '/')// && !worked)
 					{
-						boolean done = false;
 						worked = true;
 						int start = i;
 						for (int j = 2; j+i < a.length; j++)
@@ -99,24 +98,9 @@ public class Reader
 								lexemes.add(">");
 								i+=j;
 								j+=a.length;
-								done = true;
-							}
-							if (!done)
-							{
-								if(j+i >= a.length-1 ) 
-								{
-									i += j;
-									j+=a.length;
-									tokens.add("ERROR");
-									lexemes.add("**lexical error: unexpected end of file");
-								}
 							}
 						}
 					}
-				}
-				if (!worked)
-				{
-					
 				}
 			}
 			if (worked)
@@ -162,7 +146,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "</yaay  -->";
+		String s = "</yaay>  -->";
 		read(s.toCharArray());
 		printTest();
 	}

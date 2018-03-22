@@ -48,11 +48,11 @@ public class Reader
 			{
 				//COMMENT
 				// if '<!--' is read
-				if (i+3 < a.length)
+				if (i+3 < a.length )//&& !worked)
 				{
 					if (a[i+1] == '!' && a[i+2] == '-' && a[i+3] == '-')
 					{
-						worked = true;
+						//worked = true;
 						boolean done = false; 
 						int start = i;
 						for (int j = 4; j+i < a.length; j++)
@@ -82,12 +82,10 @@ public class Reader
 						}
 					}
 				}
-				if (i+1 < a.length && !worked)
+				if (i+1 < a.length)
 				{
 					if (a[i+1] == '/')// && !worked)
 					{
-						boolean done = false;
-						worked = true;
 						int start = i;
 						for (int j = 2; j+i < a.length; j++)
 						{
@@ -99,31 +97,12 @@ public class Reader
 								lexemes.add(">");
 								i+=j;
 								j+=a.length;
-								done = true;
-							}
-							if (!done)
-							{
-								if(j+i >= a.length-1 ) 
-								{
-									i += j;
-									j+=a.length;
-									tokens.add("ERROR");
-									lexemes.add("**lexical error: unexpected end of file");
-								}
 							}
 						}
 					}
 				}
-				if (!worked)
-				{
-					
-				}
 			}
-			if (worked)
-			{
-				worked = false;
-				i++;
-			}
+			i++;
 		}
 	}
 	public boolean compareSpecial(char b)
@@ -162,7 +141,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "</yaay  -->";
+		String s = "</yaay>  -->";
 		read(s.toCharArray());
 		printTest();
 	}
