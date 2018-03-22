@@ -87,10 +87,9 @@ public class Reader
 				{
 					if (a[i+1] == '/')
 					{
-						worked = true;
 						tokens.add("ENDTAGHEAD");
 						lexemes.add("</");
-						i+=2;
+						i+=1;
 					}
 				}
 				//TAGINDENT
@@ -128,12 +127,11 @@ public class Reader
 				{
 					tokens.add("LTHAN");
 					lexemes.add("<");
-					worked = true;
-					i++;
 				}
-				else
+				if (worked)
 				{
 					worked = false;
+					i++;
 				}
 			}
 		}
@@ -176,7 +174,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "<</";
+		String s = "<printme></";
 		read(s.toCharArray());
 		printTest();
 	}

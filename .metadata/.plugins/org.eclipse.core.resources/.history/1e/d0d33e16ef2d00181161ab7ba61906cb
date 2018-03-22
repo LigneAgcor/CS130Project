@@ -87,7 +87,6 @@ public class Reader
 				{
 					if (a[i+1] == '/')
 					{
-						worked = true;
 						tokens.add("ENDTAGHEAD");
 						lexemes.add("</");
 						i+=2;
@@ -129,11 +128,15 @@ public class Reader
 					tokens.add("LTHAN");
 					lexemes.add("<");
 					worked = true;
-					i++;
+					i+=2;
+				}
+				if (worked)
+				{
+					worked = false;
 				}
 				else
 				{
-					worked = false;
+					i++;
 				}
 			}
 		}

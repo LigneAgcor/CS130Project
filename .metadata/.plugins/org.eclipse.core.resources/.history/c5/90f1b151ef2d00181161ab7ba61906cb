@@ -87,7 +87,6 @@ public class Reader
 				{
 					if (a[i+1] == '/')
 					{
-						worked = true;
 						tokens.add("ENDTAGHEAD");
 						lexemes.add("</");
 						i+=2;

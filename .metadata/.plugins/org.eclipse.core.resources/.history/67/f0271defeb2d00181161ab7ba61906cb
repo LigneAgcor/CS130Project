@@ -82,30 +82,18 @@ public class Reader
 						}
 					}
 				}
-				//ENDTAGHEAD
 				if (i+1 < a.length && !worked)
 				{
-					if (a[i+1] == '/')
-					{
-						worked = true;
-						tokens.add("ENDTAGHEAD");
-						lexemes.add("</");
-						i+=2;
-					}
-				}
-				//TAGINDENT
-				if (i+1 < a.length && !worked)
-				{
-					if (!compareSpecial(a[i+1]))
+					if (a[i+1] == '/')// && !worked)
 					{
 						boolean done = false;
 						worked = true;
 						int start = i;
-						for (int j = 1; j+i < a.length; j++)
+						for (int j = 2; j+i < a.length; j++)
 						{
 							if(a[i+j] == '>')
 							{
-								tokens.add("TAGINDENT");
+								tokens.add("ENDTAGHEAD");
 								addString(start, i+j-1,a);
 								tokens.add("GTHAN");
 								lexemes.add(">");
@@ -117,8 +105,10 @@ public class Reader
 							{
 								if(j+i >= a.length-1 ) 
 								{
+									i += j;
 									j+=a.length;
-									worked = false;
+									tokens.add("ERROR");
+									lexemes.add("**lexical error: unexpected end of file");
 								}
 							}
 						}
@@ -126,23 +116,19 @@ public class Reader
 				}
 				if (!worked)
 				{
-					tokens.add("LTHAN");
-					lexemes.add("<");
-					worked = true;
-					i++;
+					
 				}
-				else
-				{
-					worked = false;
-				}
+			}
+			if (worked)
+			{
+				worked = false;
+				i++;
 			}
 		}
 	}
 	public boolean compareSpecial(char b)
 	{
-		int ascii = (int) b;
-		//33-46
-		if (ascii == 34 || ascii == 37 || (ascii >= 39 && ascii <= 46) || ascii == 58 || ascii == 59)
+		if (b == '+' || b == '-' || b == '*' || b == '%' || b == '(' || b == ')' || b == ':' || b == ',' || b == '.' || b == '"')
 		{
 			return true;
 		}
@@ -176,7 +162,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "<</";
+		String s = "</printme></yaay  --";
 		read(s.toCharArray());
 		printTest();
 	}

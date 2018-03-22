@@ -87,10 +87,29 @@ public class Reader
 				{
 					if (a[i+1] == '/')
 					{
+						boolean done = false;
 						worked = true;
-						tokens.add("ENDTAGHEAD");
-						lexemes.add("</");
-						i+=2;
+						int start = i;
+						for (int j = 2; j+i < a.length; j++)
+						{
+							if(a[i+j] == '>')
+							{
+								tokens.add("ENDTAGHEAD");
+								addString(start, i+j-1,a);
+								tokens.add("GTHAN");
+								lexemes.add(">");
+								i+=j;
+								j+=a.length;
+								done = true;
+							}
+							if (!done)
+							{
+								if(j+i >= a.length-1 ) 
+								{
+									j+=a.length;
+								}
+							}
+						}
 					}
 				}
 				//TAGINDENT
@@ -118,7 +137,6 @@ public class Reader
 								if(j+i >= a.length-1 ) 
 								{
 									j+=a.length;
-									worked = false;
 								}
 							}
 						}
@@ -126,14 +144,12 @@ public class Reader
 				}
 				if (!worked)
 				{
-					tokens.add("LTHAN");
-					lexemes.add("<");
-					worked = true;
-					i++;
+					
 				}
-				else
+				if (worked)
 				{
 					worked = false;
+					i++;
 				}
 			}
 		}
@@ -176,7 +192,7 @@ public class Reader
 	
 	public void tagTest()
 	{
-		String s = "<</";
+		String s = "<printme></yaay </";
 		read(s.toCharArray());
 		printTest();
 	}
