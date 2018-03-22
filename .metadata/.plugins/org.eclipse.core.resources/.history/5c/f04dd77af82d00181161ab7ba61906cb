@@ -196,17 +196,6 @@ public class Reader
 					i++;
 				}
 			}
-			// ------------ MINUS
-			if (i < a.length)
-			{
-				if (a[i] == '-')
-				{
-					tokens.add("MINUS");
-					lexemes.add("-");
-					worked = true;
-					i++;
-				}
-			}
 			if (!worked)
 			{
 				i++;
@@ -262,7 +251,7 @@ public class Reader
 	
 	public void basicTest()
 	{
-		String s = "+:<+**-->*";
+		String s = "+:<+**>*";
 		read(s.toCharArray());
 		printTest();
 	}

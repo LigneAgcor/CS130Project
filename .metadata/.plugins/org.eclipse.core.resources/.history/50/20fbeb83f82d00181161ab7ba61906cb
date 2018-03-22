@@ -262,7 +262,7 @@ public class Reader
 	
 	public void basicTest()
 	{
-		String s = "+:<+**-->*";
+		String s = "+:<+**>*";
 		read(s.toCharArray());
 		printTest();
 	}
