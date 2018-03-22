@@ -162,7 +162,6 @@ public class Reader
 			// ---------- MULT, EXP
 			if (i < a.length)
 			{
-				
 				if (a[i] == '*')
 				{
 					worked = true;
@@ -178,11 +177,9 @@ public class Reader
 						}
 					}
 					if (!done)
-					{
-						tokens.add("MULT");
-						lexemes.add("*");
-						i++;
-					}
+					tokens.add("MULT");
+					lexemes.add("*");
+					i++;
 				}
 			}
 			if (!worked)
@@ -191,6 +188,7 @@ public class Reader
 			}
 			else
 			{
+				System.out.println(a[i] + " " + i);
 				worked = false;
 			}
 		}
@@ -248,13 +246,5 @@ public class Reader
 	{
 		Reader a = new Reader();
 		a.basicTest();
-		/*
-		System.out.println(a.lexemes.size());
-		System.out.println(a.tokens.size());
-		for(int i = 0; i < a.lexemes.size(); i++)
-		{
-			System.out.println(a.lexemes.get(i));
-		}
-		*/
 	}
 }
