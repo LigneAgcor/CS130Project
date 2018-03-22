@@ -209,15 +209,9 @@ public class Reader
 		printTest();
 	}
 	
-	public void basicTest()
-	{
-		String s = ":<>";
-		read(s.toCharArray());
-		printTest();
-	}
 	public static void main(String args[]) throws Exception
 	{
 		Reader a = new Reader();
-		a.basicTest();
+		a.tagTest();
 	}
 }
