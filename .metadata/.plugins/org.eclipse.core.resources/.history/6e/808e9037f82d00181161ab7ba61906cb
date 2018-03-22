@@ -186,16 +186,16 @@ public class Reader
 				}
 			}
 			// ------------ PLUS
-			if (i < a.length)
-			{
-				if (a[i] == '+')
-				{
-					tokens.add("PLUS");
-					lexemes.add("+");
-					worked = true;
-					i++;
-				}
-			}
+						if (i < a.length)
+						{
+							if (a[i] == '+')
+							{
+								tokens.add("PLUS");
+								lexemes.add("+");
+								worked = true;
+								i++;
+							}
+						}
 			if (!worked)
 			{
 				i++;
@@ -251,7 +251,7 @@ public class Reader
 	
 	public void basicTest()
 	{
-		String s = "+:<+**>*";
+		String s = ":<**>*";
 		read(s.toCharArray());
 		printTest();
 	}
