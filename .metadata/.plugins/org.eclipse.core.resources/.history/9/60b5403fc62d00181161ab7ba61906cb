@@ -1,0 +1,42 @@
+import java.io.*;
+import java.util.*;
+
+public class Reader
+{
+	public ArrayList<String> tokens = new ArrayList<String>();
+	public ArrayList<String> lexemes = new ArrayList<String>();
+	public Reader() throws Exception
+	{
+		FileReader file = null;
+		try 
+		{
+			file = new FileReader("src\\text files\\text.txt");
+		}
+		catch(FileNotFoundException ae)
+		{
+			System.out.println("File not Found");
+		}
+		BufferedReader br = new BufferedReader(file);
+		
+		String currentLine;
+		
+		while ((currentLine = br.readLine()) != null)
+		{
+			System.out.println(currentLine);
+		}
+		
+	}
+	
+	public static void main(String args[]) throws Exception
+	{
+		Reader test = new Reader();
+		
+		System.out.println("Run testing");
+	}
+	
+	public void read()
+	{
+		
+	}
+	
+}
