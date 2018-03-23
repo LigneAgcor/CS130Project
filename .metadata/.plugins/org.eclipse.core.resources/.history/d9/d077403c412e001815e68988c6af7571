@@ -41,7 +41,7 @@ public class Reader
 	{	
 		int i = 0;
 		boolean worked = false;
-		while (a.length > i)
+		while (a.length > i+1)
 		{
 			//read <        for COMMENT, TAGIDENT, LTHAN
 			if (a[i] == '<')
@@ -422,7 +422,7 @@ public class Reader
 	public static void main(String args[]) throws Exception
 	{
 		Reader a = new Reader();
-		a.tagTest();
+		a.illegalTest();
 		/*
 		System.out.println(a.lexemes.size());
 		System.out.println(a.tokens.size());

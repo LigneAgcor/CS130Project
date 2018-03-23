@@ -41,7 +41,7 @@ public class Reader
 	{	
 		int i = 0;
 		boolean worked = false;
-		while (a.length > i)
+		while (a.length > i+1)
 		{
 			//read <        for COMMENT, TAGIDENT, LTHAN
 			if (a[i] == '<')
@@ -138,7 +138,7 @@ public class Reader
 				}
 			}
 			// ----------- GTHAN
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '>')
 				{
@@ -149,7 +149,7 @@ public class Reader
 				}
 			}
 			// ------------ COLON
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == ':')
 				{
@@ -160,7 +160,7 @@ public class Reader
 				}
 			}
 			// ---------- MULT, EXP
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				
 				if (a[i] == '*')
@@ -186,7 +186,7 @@ public class Reader
 				}
 			}
 			// ------------ PLUS
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '+')
 				{
@@ -197,7 +197,7 @@ public class Reader
 				}
 			}
 			// ------------ MINUS
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '-')
 				{
@@ -208,7 +208,7 @@ public class Reader
 				}
 			}
 			// ------------ DIVIDE
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '/')
 				{
@@ -219,7 +219,7 @@ public class Reader
 				}
 			}
 			// -------------- MODULO
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '%')
 				{
@@ -230,7 +230,7 @@ public class Reader
 				}
 			}
 			// -------------- LPAREN
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '(')
 				{
@@ -241,7 +241,7 @@ public class Reader
 				}
 			}
 			// ------------- RPAREN
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == ')')
 				{
@@ -252,7 +252,7 @@ public class Reader
 				}
 			}
 			// ------------- EQUALS
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '=')
 				{
@@ -263,7 +263,7 @@ public class Reader
 				}
 			}
 			// ------------ COMMA
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == ',')
 				{
@@ -274,7 +274,7 @@ public class Reader
 				}
 			}
 			// ------------ PERIOD
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '.')
 				{
@@ -285,7 +285,7 @@ public class Reader
 				}
 			}
 			// ------------ DQUOTE
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '\"')
 				{
@@ -296,60 +296,12 @@ public class Reader
 				}
 			}
 			// ------------ QUOTE
-			if (i < a.length && !worked)
+			if (i < a.length)
 			{
 				if (a[i] == '\'')
 				{
 					tokens.add("QUOTE");
 					lexemes.add("\'");
-					worked = true;
-					i++;
-				}
-			}
-			/*
-			// ------------ IDENT
-			if (i < a.length && !worked)
-			{
-				if (!compareSpecial(a[i+1]))
-				{
-					boolean done = false;
-					worked = true;
-					int start = i;
-					boolean foundLetter = false; 
-					for (int j = 1; j+i < a.length; j++)
-					{
-						if(a[i+j] == '>' && foundLetter)
-						{
-							tokens.add("TAGINDENT");
-							addString(start, i+j-1,a);
-							i+=j;
-							j+=a.length;
-							done = true;
-						}
-						if (!done)
-						{
-							
-							if(j+i >= a.length-1 ) 
-							{
-								j+=a.length;
-								worked = false;
-							}
-							else
-							{
-								foundLetter = true;
-							}
-						}
-					}
-				}
-			}
-			*/
-			//illegal characters
-			if (i < a.length && !worked)
-			{
-				if (a[i] == '$' || a[i] == '!' || a[i] == '&')
-				{
-					tokens.add("ERROR");
-					lexemes.add("***lexical error: illegal character (" + a[i] + ")");
 					worked = true;
 					i++;
 				}
@@ -368,7 +320,7 @@ public class Reader
 	{
 		int ascii = (int) b;
 		//33-46
-		if (ascii == 34 || ascii == 37 || (ascii >= 39 && ascii <= 46) || ascii == 58 || ascii == 59 || b == ' ')
+		if (ascii == 34 || ascii == 37 || (ascii >= 39 && ascii <= 46) || ascii == 58 || ascii == 59)
 		{
 			return true;
 		}
@@ -413,16 +365,10 @@ public class Reader
 		read(s.toCharArray());
 		printTest();
 	}
-	public void illegalTest()
-	{
-		String s = "+/$:<\'\"()!+**->=,.&*%";
-		read(s.toCharArray());
-		printTest();
-	}
 	public static void main(String args[]) throws Exception
 	{
 		Reader a = new Reader();
-		a.tagTest();
+		a.basicTest();
 		/*
 		System.out.println(a.lexemes.size());
 		System.out.println(a.tokens.size());

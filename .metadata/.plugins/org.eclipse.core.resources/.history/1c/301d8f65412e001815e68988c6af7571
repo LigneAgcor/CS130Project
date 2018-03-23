@@ -422,7 +422,7 @@ public class Reader
 	public static void main(String args[]) throws Exception
 	{
 		Reader a = new Reader();
-		a.tagTest();
+		a.illegalTest();
 		/*
 		System.out.println(a.lexemes.size());
 		System.out.println(a.tokens.size());
