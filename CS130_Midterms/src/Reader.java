@@ -309,6 +309,17 @@ public class Reader
 					i++;
 				}
 			}
+			// ------------ SCOLON
+			if (i < a.length && !worked)
+			{
+				if (a[i] == ';')
+				{
+					tokens.add("SCOLON");
+					lexemes.add(";");
+					worked = true;
+					i++;
+				}
+			}
 			// ------------ NUMBERS
 			if (i < a.length && !worked)
 			{
@@ -318,7 +329,7 @@ public class Reader
 					int start = i;
 					boolean done = false;
 					boolean decimal = false;
-					boolean open = true;
+					boolean open = false;
 					boolean exponent = false;
 					boolean expdeci = false;
 					boolean expneg = false;
@@ -337,7 +348,7 @@ public class Reader
 								lexemes.add("***lexical error: badly formed number");
 								tokens.add("NUMBER");
 								addString(start, i+j,a);
-								i+=j+1;
+								i+=j;
 								j+=a.length;
 								done = true;
 								break;
@@ -395,7 +406,7 @@ public class Reader
 								lexemes.add("***lexical error: badly formed number");
 								tokens.add("NUMBER");
 								addString(start, i+j,a);
-								i+=j;
+								i+=j+1;
 								j+=a.length;
 								done = true;
 								break;
@@ -514,7 +525,8 @@ public class Reader
 				ascii == 62 ||
 				b == '!' ||
 				b == '&' ||
-				b == '$')
+				b == '$' ||
+				b == ';')
 		{
 			return true;
 		}
@@ -599,7 +611,7 @@ public class Reader
 	}
 	public void numberTest() throws Exception
 	{
-		String s = "123e-10.5asdq";
+		String s = "123.+2";
 		read(s.toCharArray());
 		printTest();
 	}
