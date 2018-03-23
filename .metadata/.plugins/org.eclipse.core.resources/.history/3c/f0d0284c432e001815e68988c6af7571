@@ -313,22 +313,13 @@ public class Reader
 				{
 					worked = true;
 					int start = i;
-					boolean done = false;
 					for (int j = 1; j+i < a.length; j++)
 					{
-						if(!compareLetter(a[j+i]))
+						if(!compareLetter(a[i]))
 						{
 							tokens.add("IDENT");
 							addString(start, i+j-1,a);
-							i+=j;
-							j+=a.length;
-							done = true;
-						}
-						if (!done && j+i+1 >= a.length)
-						{
-							tokens.add("IDENT");
-							addString(start, i+j,a);
-							i+=j+1;
+							i+=j-1;
 							j+=a.length;
 						}
 					}
@@ -425,7 +416,7 @@ public class Reader
 	}
 	public void letterTest()
 	{
-		String s = "< acsd hello world hehe </<";
+		String s = "acsd";
 		read(s.toCharArray());
 		printTest();
 	}

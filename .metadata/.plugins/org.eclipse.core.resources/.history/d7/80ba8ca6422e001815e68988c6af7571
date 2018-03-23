@@ -311,25 +311,30 @@ public class Reader
 			{
 				if (compareLetter(a[i]))
 				{
+					boolean done = false;
 					worked = true;
 					int start = i;
-					boolean done = false;
 					for (int j = 1; j+i < a.length; j++)
 					{
-						if(!compareLetter(a[j+i]))
+						if(a[i+j] == '>')
 						{
-							tokens.add("IDENT");
+							tokens.add("TAGINDENT");
 							addString(start, i+j-1,a);
 							i+=j;
 							j+=a.length;
 							done = true;
 						}
-						if (!done && j+i+1 >= a.length)
+						if (!done)
 						{
-							tokens.add("IDENT");
-							addString(start, i+j,a);
-							i+=j+1;
-							j+=a.length;
+							
+							if(j+i >= a.length-1 ) 
+							{
+								j+=a.length;
+								worked = false;
+							}
+							else
+							{
+							}
 						}
 					}
 				}
@@ -423,16 +428,10 @@ public class Reader
 		read(s.toCharArray());
 		printTest();
 	}
-	public void letterTest()
-	{
-		String s = "< acsd hello world hehe </<";
-		read(s.toCharArray());
-		printTest();
-	}
 	public static void main(String args[]) throws Exception
 	{
 		Reader a = new Reader();
-		a.letterTest();
+		a.tagTest();
 		/*
 		System.out.println(a.lexemes.size());
 		System.out.println(a.tokens.size());

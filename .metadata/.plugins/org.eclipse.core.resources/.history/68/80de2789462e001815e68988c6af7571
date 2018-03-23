@@ -425,7 +425,7 @@ public class Reader
 	}
 	public void letterTest()
 	{
-		String s = "< acsd hello world hehe </<";
+		String s = "< acsd hello world hehe <\<";
 		read(s.toCharArray());
 		printTest();
 	}
