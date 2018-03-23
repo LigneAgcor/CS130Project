@@ -64,7 +64,7 @@ public class Reader
 									//for testing comment detection
 									tokens.add("COMMENT");
 									addString(start, i+j+2,a);
-									i+=j+3;
+									i+=j;
 									j+=a.length;
 									done = true;
 								}
@@ -73,7 +73,7 @@ public class Reader
 							{
 								if(j+i >= a.length-1 ) 
 								{
-									i += j+1;
+									i += j;
 									j+=a.length;
 									tokens.add("ERROR");
 									lexemes.add("**lexical error: unexpected end of file");
@@ -432,7 +432,7 @@ public class Reader
 	public static void main(String args[]) throws Exception
 	{
 		Reader a = new Reader();
-		a.commentTest();
+		a.letterTest();
 		/*
 		System.out.println(a.lexemes.size());
 		System.out.println(a.tokens.size());
