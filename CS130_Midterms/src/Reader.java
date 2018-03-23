@@ -5,12 +5,13 @@ public class Reader
 {
 	public ArrayList<String> tokens = new ArrayList<String>();
 	public ArrayList<String> lexemes = new ArrayList<String>();
-	public Reader() throws Exception
+	String allinLine = "";
+	public Reader(String path) throws Exception
 	{
 		FileReader file = null;
 		try 
 		{
-			file = new FileReader("src\\text files\\text.txt");
+			file = new FileReader(path);
 		}
 		catch(FileNotFoundException ae)
 		{
@@ -22,7 +23,8 @@ public class Reader
 		
 		while ((currentLine = br.readLine()) != null)
 		{
-			//System.out.println(currentLine);
+			allinLine += currentLine;
+			allinLine += " ";
 		}
 		
 	}
@@ -43,6 +45,7 @@ public class Reader
 		boolean worked = false;
 		while (a.length > i)
 		{
+			//System.out.println(a[i]);
 			//read <        for COMMENT, TAGIDENT, LTHAN
 			if (a[i] == '<')
 			{
@@ -62,8 +65,8 @@ public class Reader
 								if(a[i+j] == '-' && a[i+j+1] == '-' && a[i+j+2] == '>')
 								{
 									//for testing comment detection
-									tokens.add("COMMENT");
-									addString(start, i+j+2,a);
+									//tokens.add("COMMENT");
+									//addString(start, i+j+2,a);
 									i+=j+3;
 									j+=a.length;
 									done = true;
@@ -104,7 +107,7 @@ public class Reader
 						boolean foundLetter = false; 
 						for (int j = 1; j+i < a.length; j++)
 						{
-							if(a[i+j] == '>' && foundLetter)
+							if((a[i+j] == '>' || compareSpecial(a[i+j]) )  && foundLetter)
 							{
 								tokens.add("TAGINDENT");
 								addString(start, i+j-1,a);
@@ -115,7 +118,7 @@ public class Reader
 							if (!done)
 							{
 								
-								if(j+i >= a.length-1 ) 
+								if(j+i >= a.length-1 || compareSpecial(a[i+j])) 
 								{
 									j+=a.length;
 									worked = false;
@@ -306,6 +309,148 @@ public class Reader
 					i++;
 				}
 			}
+			// ------------ NUMBERS
+			if (i < a.length && !worked)
+			{
+				if (compareNumber(a[i]))
+				{
+					worked = true;
+					int start = i;
+					boolean done = false;
+					boolean decimal = false;
+					boolean open = true;
+					boolean exponent = false;
+					boolean expdeci = false;
+					boolean expneg = false;
+					for (int j = 1; i+j < a.length; j++)
+					{
+						if(a[j+i] == '.'  && !decimal && !exponent)
+						{
+							decimal = true;
+							open = true;
+						}
+						else if(a[j+i] == '.'  && decimal && !exponent)
+						{
+							if(open)
+							{
+								tokens.add("ERROR");
+								lexemes.add("***lexical error: badly formed number");
+								tokens.add("NUMBER");
+								addString(start, i+j,a);
+								i+=j+1;
+								j+=a.length;
+								done = true;
+								break;
+							}
+							else
+							{
+								tokens.add("NUMBER");
+								addString(start, i+j-1,a);
+								i+=j;
+								j+=a.length;
+								done = true;
+								break;
+							}
+						}
+						
+						if((a[j+i] == 'e' || a[j+i] == 'E') && !exponent)
+						{
+							exponent = true;
+							open = true;
+						}
+						else if((a[j+i] == 'e' || a[j+i] == 'E') && exponent)
+						{
+							if(open)
+							{
+								tokens.add("ERROR");
+								lexemes.add("***lexical error: badly formed number");
+								tokens.add("NUMBER");
+								addString(start, i+j,a);
+								i+=j+1;
+								j+=a.length;
+								done = true;
+								break;
+							}
+							else
+							{
+								tokens.add("NUMBER");
+								addString(start, i+j-1,a);
+								i+=j;
+								j+=a.length;
+								done = true;
+								break;
+							}
+						}
+						
+						if(a[j+i] == '-' && exponent && !expneg)
+						{
+							expneg = true;
+							open = true;
+						}
+						else if(a[j+i] == '-' && expneg)
+						{
+							if(open)
+							{
+								tokens.add("ERROR");
+								lexemes.add("***lexical error: badly formed number");
+								tokens.add("NUMBER");
+								addString(start, i+j,a);
+								i+=j;
+								j+=a.length;
+								done = true;
+								break;
+							}
+							else
+							{
+								tokens.add("NUMBER");
+								addString(start, i+j-1,a);
+								i+=j;
+								j+=a.length;
+								done = true;
+								break;
+							}
+						}
+						
+						if(!compareNumber(a[j+i]) && a[j+i] != '.' && (a[j+i] != 'e' && a[j+i] != 'E') && !(a[j+i] == '-' && exponent))
+						{
+							if(open)
+							{
+								tokens.add("ERROR");
+								lexemes.add("***lexical error: badly formed number");
+								tokens.add("NUMBER");
+								addString(start, i+j,a);
+								i+=j+1;
+								j+=a.length;
+								done = true;
+								break;
+							}
+							else
+							{
+								tokens.add("NUMBER");
+								addString(start, i+j-1,a);
+								i+=j;
+								j+=a.length;
+								done = true;
+								break;
+							}
+						}
+						
+						if(compareNumber(a[j+i]))
+						{
+							if(open)
+								open = false;
+						}
+						if (!done && j+i+1 >= a.length)
+						{
+							tokens.add("NUMBER");
+							addString(start, i+j,a);
+							i+=j+1;
+							j+=a.length;
+							done = true;
+						}
+					}
+				}
+			}
 			// ------------ IDENT
 			if (i < a.length && !worked)
 			{
@@ -359,7 +504,17 @@ public class Reader
 	{
 		int ascii = (int) b;
 		//33-46
-		if (ascii == 34 || ascii == 37 || (ascii >= 39 && ascii <= 46) || ascii == 58 || ascii == 59 || b == ' ')
+		if (ascii == 34 ||
+				ascii == 37 ||
+				(ascii >= 39 && ascii <= 46) ||
+				ascii == 58 ||
+				ascii == 59 ||
+				b == ' ' ||
+				ascii == 60 ||
+				ascii == 62 ||
+				b == '!' ||
+				b == '&' ||
+				b == '$')
 		{
 			return true;
 		}
@@ -382,7 +537,20 @@ public class Reader
 			return false;
 		}
 	}
-	public void printTest()
+	
+	public boolean compareNumber(char n)
+	{
+		int num = (int) n;
+		if ((num >= 48 && num <= 57))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	public void printTest() throws Exception
 	{
 		for (int i = 0; i < tokens.size(); i++)
 		{
@@ -397,42 +565,54 @@ public class Reader
 		}
 	}
 	
-	public void commentTest()
+	public void commentTest() throws Exception
 	{
 		String s = "<!-- im a valid comment -->  <!--im invalid:((";
 		read(s.toCharArray());
 		printTest();
 	}
 	
-	public void tagTest()
+	public void tagTest() throws Exception
 	{
 		String s = "< asd><></";
 		read(s.toCharArray());
 		printTest();
 	}
 	
-	public void basicTest()
+	public void basicTest() throws Exception
 	{
 		String s = "+/:<\'\"()/+**-->=,.*%";
 		read(s.toCharArray());
 		printTest();
 	}
-	public void illegalTest()
+	public void illegalTest() throws Exception
 	{
 		String s = "+/$:<\'\"()!+**->=,.&*%";
 		read(s.toCharArray());
 		printTest();
 	}
-	public void letterTest()
+	public void letterTest() throws Exception
 	{
 		String s = "< acsd hello world hehe </<";
 		read(s.toCharArray());
 		printTest();
 	}
+	public void numberTest() throws Exception
+	{
+		String s = "123e-10.5asdq";
+		read(s.toCharArray());
+		printTest();
+	}
+	public void allTest() throws Exception
+	{
+		String s = allinLine;
+		read(s.toCharArray());
+		printTest();
+	}
 	public static void main(String args[]) throws Exception
 	{
-		Reader a = new Reader();
-		a.commentTest();
+		Reader a = new Reader(args[0]);
+		a.allTest();
 		/*
 		System.out.println(a.lexemes.size());
 		System.out.println(a.tokens.size());
