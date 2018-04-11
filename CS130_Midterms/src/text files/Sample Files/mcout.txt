@@ -1,0 +1,94 @@
+IDENT      some
+IDENT      bad
+IDENT      numbers
+IDENT      follow
+COLON      :
+***lexical error: badly formed number
+NUMBER     1.+
+NUMBER     2
+***lexical error: badly formed number
+NUMBER     5.5ea
+***lexical error: badly formed number
+NUMBER     5.5e-x
+IDENT      valid
+COLON      :
+PLUS       +
+MINUS      -
+MULT       *
+DIVIDE     /
+MODULO     %
+EXP        **
+LPAREN     (
+RPAREN     )
+EQUALS     =
+LTHAN      <
+GTHAN      >
+COLON      :
+COMMA      ,
+PERIOD     .
+QUOTE      '
+DQUOTE     "
+ENDTAGHEAD </
+PLUS       +
+MINUS      -
+MULT       *
+DIVIDE     /
+MODULO     %
+EXP        **
+LPAREN     (
+RPAREN     )
+EQUALS     =
+LTHAN      <
+GTHAN      >
+COLON      :
+COMMA      ,
+PERIOD     .
+QUOTE      '
+DQUOTE     "
+ENDTAGHEAD </
+IDENT      there
+IDENT      are
+IDENT      thee
+IDENT      invalid
+IDENT      characters
+IDENT      here
+COLON      :
+IDENT      abc
+***lexical error: illegal character ($)
+IDENT      def
+***lexical error: illegal character (!)
+IDENT      ghi
+***lexical error: illegal character (&)
+IDENT      xyz
+IDENT      numbers
+NUMBER     123
+IDENT      between
+NUMBER     1.1
+IDENT      words
+TAGIDENT   <tag
+LTHAN      <
+IDENT      notAtag
+LTHAN      <
+***lexical error: illegal character (!)
+MINUS      -
+IDENT      this
+IDENT      is
+IDENT      not
+COMMA      ,
+IDENT      in
+IDENT      fact
+IDENT      there
+IDENT      is
+IDENT      an
+IDENT      invalid
+IDENT      character
+MINUS      -
+MINUS      -
+GTHAN      >
+IDENT      unterminated
+IDENT      comment
+IDENT      coming
+PERIOD     .
+PERIOD     .
+PERIOD     .
+***lexical error: un-expected end of file
