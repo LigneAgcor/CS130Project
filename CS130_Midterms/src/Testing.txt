@@ -1,0 +1,157 @@
+int count = 0;
+	
+	public void parseTokens()
+	{
+		String out = "";
+		while(count < tokens.size())
+		{
+			String tkn = tokens.get(count);
+			//String lxm = lexemes.get(ctr);
+			if(tkn.equals("TAGIDENT"))
+			{
+				out += tagOpen();
+				
+			}
+			count++;
+		}
+		
+		System.out.println(out);
+	}
+	
+	String tagOpen()
+	{
+		String concatenated = "";
+		while(!tokens.get(count).equals("ENDTAGHEAD"))
+		{
+			if(tokens.get(count).equals("TAGIDENT"))
+			{
+				count++;
+				concatenated += tagOpen();
+			}
+			else
+			{
+				concatenated += parse();
+			}
+		}
+		return concatenated;
+	}
+
+String parse()
+	{
+		String concatenated = "";
+		while(!tokens.get(count).equals("ENDTAGHEAD"))
+		{
+			if(tokens.get(count).equals("IDENT"))
+			{
+				concatenated += lexemes.get(count);
+			}
+			if(tokens.get(count).equals("NUMBER"))
+			{
+				concatenated += lexemes.get(count);
+			}
+			count++;
+		}
+		return concatenated;
+	}
+	
+float result = Float.parseFloat(operlexeme.get(0));
+	
+	while(true)
+	{
+		int selector = 0;
+		if(index.size() == max)
+			break;
+		for(String x : opertokens)
+		{
+			int indexer = -1;
+			switch(selector)
+			{
+			case 0:
+				if(x.equals("EXP"))
+				{
+					indexer = opertokens.indexOf(x);
+					index.add(indexer);
+				}
+				break;
+			case 1:
+				if(x.equals("MODULUS"))
+				{
+					indexer = opertokens.indexOf(x);
+					index.add(indexer);
+				}
+				break;
+			case 2:
+				if(x.equals("MULT"))
+				{
+					indexer = opertokens.indexOf(x);
+					index.add(indexer);
+				}
+				break;
+			case 3:
+				if(x.equals("DIV"))
+				{
+					indexer = opertokens.indexOf(x);
+					index.add(indexer);
+				}
+				break;
+			case 4:
+				if(x.equals("PLUS"))
+				{
+					indexer = opertokens.indexOf(x);
+					index.add(indexer);
+				}
+				break;
+			case 5:
+				if(x.equals("MINUS"))
+				{
+					indexer = opertokens.indexOf(x);
+					index.add(indexer);
+				}
+				else
+				{
+					index.add(-1);
+				}
+				break;
+			}
+				
+		}
+		selector++;
+	}
+	
+	for(Integer i : index)
+	{
+		switch(opertokens.get(i))
+		{
+		case "MULT":
+			result = 
+			break;
+		case "DIV":
+			break;
+		case "PLUS":
+			break;
+		case "MINUS":
+			break;
+		}
+	}
+	
+EXPRESSION -> TERM {(plus | minus) TERM}
+TERM -> FACTOR {(multiply | divide) FACTOR}
+FACTOR -> number | lparen, EXPRESSION, rparen
+
+void calaculate()
+{
+	float result = 0;
+	if(NUMBER)
+	{
+		result = operate(number);
+	}
+	
+	if(op)
+	{
+	}
+}
+
+void operate(number)
+{
+	
+}

@@ -1,32 +1,42 @@
 import java.io.*;
 import java.util.*;
+import javax.script.*;
 
 public class Reader
 {
+	public ArrayList<String> tags = new ArrayList<String>();
+	public ArrayList<String> output = new ArrayList<String>();
 	public ArrayList<String> tokens = new ArrayList<String>();
 	public ArrayList<String> lexemes = new ArrayList<String>();
 	String allinLine = "";
-	public Reader(String path) throws Exception
+	public Reader(String input) throws Exception
 	{
-		FileReader file = null;
-		try 
-		{
-			file = new FileReader(path);
-		}
-		catch(FileNotFoundException ae)
-		{
-			System.out.println("File not Found");
-		}
-		BufferedReader br = new BufferedReader(file);
+			FileReader file = null;
+			try
+			{
+				file = new FileReader(input);
+			}
+			catch(FileNotFoundException ae)
+			{
+				System.out.println("File not Found");
+			}
+			BufferedReader br = new BufferedReader(file);
+			
+			String currentLine;
+			
+			while ((currentLine = br.readLine()) != null)
+			{
+				allinLine += currentLine;
+				//allinLine += " ";
+			}
 		
-		String currentLine;
+		//System.out.println(allinLine);
 		
-		while ((currentLine = br.readLine()) != null)
-		{
-			allinLine += currentLine;
-			allinLine += " ";
-		}
-		
+	}
+	
+	public Reader()
+	{
+		allinLine = "This is for Unit Testing";
 	}
 	
 	public void addString(int start, int end, char[] a)
@@ -46,7 +56,7 @@ public class Reader
 		while (a.length > i)
 		{
 			//System.out.println(a[i]);
-			//read <        for COMMENT, TAGIDENT, LTHAN
+			//read < for COMMENT, TAGIDENT, LTHAN
 			if (a[i] == '<')
 			{
 				//COMMENT
@@ -109,7 +119,7 @@ public class Reader
 						{
 							if((a[i+j] == '>' || compareSpecial(a[i+j]) )  && foundLetter)
 							{
-								tokens.add("TAGINDENT");
+								tokens.add("TAGIDENT");
 								addString(start, i+j-1,a);
 								i+=j;
 								j+=a.length;
@@ -172,7 +182,18 @@ public class Reader
 					boolean done = false;
 					if (i+1 < a.length)
 					{
-						if (a[i+1] == '*')
+						if (i+2 < a.length)
+						{
+							
+							if (a[i+1] == '*' && a[i+2] == '*')
+							{
+								tokens.add("KLEENE");
+								lexemes.add("***");
+								i+=3;
+								done = true;
+							}
+						}
+						if (!done && a[i+1] == '*')
 						{
 							tokens.add("EXP");
 							lexemes.add("**");
@@ -305,6 +326,28 @@ public class Reader
 				{
 					tokens.add("QUOTE");
 					lexemes.add("\'");
+					worked = true;
+					i++;
+				}
+			}
+			// ------------ LBRACKET
+			if (i < a.length && !worked)
+			{
+				if (a[i] == '[')
+				{
+					tokens.add("LBRACKET");
+					lexemes.add("[");
+					worked = true;
+					i++;
+				}
+			}
+			// ------------ RBRACKET
+			if (i < a.length && !worked)
+			{
+				if (a[i] == ']')
+				{
+					tokens.add("RBRACKET");
+					lexemes.add("]");
 					worked = true;
 					i++;
 				}
@@ -511,6 +554,8 @@ public class Reader
 			}
 		}
 	}
+	
+	
 	public boolean compareSpecial(char b)
 	{
 		int ascii = (int) b;
@@ -562,6 +607,195 @@ public class Reader
 			return false;
 		}
 	}
+
+
+int count = 0;
+	
+	public String parseTokens(ArrayList<String> tokens, ArrayList<String> lexemes)
+	{
+		String out = "";
+		while(count < tokens.size())
+		{
+			String tkn = tokens.get(count);
+			//String lxm = lexemes.get(ctr);
+			if(tkn.equals("TAGIDENT"))
+			{
+				out += tagOpen();
+			}
+			if(lexemes.get(count).equals("tr"))
+			{
+				
+				out += "\n";
+			}
+			if(lexemes.get(count).equals("td") && !lexemes.get(count+3).equals("tr"))
+			{
+				
+				out += ",";
+			}
+			if(tkn.equals("ERROR"))
+			{
+				out += "ERROR FOUND" + lexemes.get(count);
+				break;
+			}
+			count++;
+		}
+		
+		return out;
+	}
+	
+	public String parseTokens()
+	{
+		return parseTokens(tokens, lexemes);
+	}
+	
+	String tagOpen()
+	{
+		String concatenated = "";
+		while(!tokens.get(count).equals("ENDTAGHEAD"))
+		{
+			if(tokens.get(count).equals("ERROR"))
+			{
+				concatenated = "ERROR FOUND" + lexemes.get(count);
+				break;
+			}
+			if(tokens.get(count).equals("TAGIDENT"))
+			{
+				count++;
+				concatenated += tagOpen();
+			}
+			else
+			{
+				concatenated += parse();
+			}
+		}
+		return concatenated;
+	}
+
+String parse()
+	{
+		String concatenated = "";
+		boolean calculate = false;
+		boolean bracketed = false;
+		while(!tokens.get(count).equals("ENDTAGHEAD"))
+		{
+				if(tokens.get(count).equals("ERROR"))
+				{
+					concatenated = "ERROR FOUND" + lexemes.get(count);
+					break;
+				}
+				if(tokens.get(count).equals("LBRACKET"))
+				{
+					bracketed = true;
+				}
+				if(tokens.get(count).equals("IDENT"))
+				{
+					concatenated += lexemes.get(count);
+				}
+				if(tokens.get(count).equals("EQUALS"))
+				{
+					calculate = true;
+					count++;
+					concatenated += calculate(bracketed);
+				}
+				if(tokens.get(count).equals("NUMBER"))
+				{
+					concatenated += lexemes.get(count);
+				}
+				if(tokens.get(count).equals("RBRACKET"))
+				{
+					bracketed = false;
+				}
+			if(!calculate)
+				count++;
+		}
+		return concatenated;
+	}
+
+String calculate(boolean bracketed)
+{
+	ScriptEngineManager mgr = new ScriptEngineManager();
+	ScriptEngine engine = mgr.getEngineByName("JavaScript");
+	String expression = "";
+	float result = 0;
+	while(!tokens.get(count).equals("ENDTAGHEAD"))
+	{
+		if(tokens.get(count).equals("ERROR"))
+		{
+			expression = "ERROR FOUND" + lexemes.get(count);
+			break;
+		}
+		
+		boolean exp = false;
+		if(tokens.get(count+1).equals("EXP"))
+		{
+			expression += ("Math.pow(" + lexemes.get(count) + "," + lexemes.get(count+2) + ")");
+			count += 3;
+			exp = true;
+		}
+		if(!tokens.get(count).equals("RBRACKET") && !exp)
+			expression += lexemes.get(count);
+		if(!exp)
+			count++;
+	}
+	try {
+		result = Float.parseFloat(engine.eval(expression).toString());
+	} catch (Exception e) {}
+	
+	if(!bracketed)
+		return "" + result;
+	else
+		return expression;
+}
+
+/* To be placed inside calculate supposedly unless I'm able to fix it
+if(tokens.get(count).equals("NUMBER"))
+{
+	if(result == 0)
+		result = Float.parseFloat(lexemes.get(count));
+	switch(op)
+	{
+	case 0:
+		break;
+	case 1:
+		result += Float.parseFloat(lexemes.get(count));
+		break;
+	case 2:
+		result -= Float.parseFloat(lexemes.get(count));
+		break;
+	case 3:
+		result *= Float.parseFloat(lexemes.get(count));
+		break;
+	case 4:
+		result /= Float.parseFloat(lexemes.get(count));
+		break;
+	case 5:
+		float multiplier = result;
+		for(int ctr = 1; ctr < Integer.parseInt(lexemes.get(count)); ctr++)
+			result *= multiplier;
+		break;
+	}
+	op = 0;
+}
+switch(tokens.get(count))
+{
+case "PLUS":
+	op = 1;
+	break;
+case "MINUS":
+	op = 2;
+	break;
+case "MULT":
+	op = 3;
+	break;
+case "DIV":
+	op = 4;
+	break;
+case "EXP":
+	op = 5;
+	break;
+}*/
+	
+	
 	public void printTest() throws Exception
 	{
 		for (int i = 0; i < tokens.size(); i++)
@@ -576,7 +810,7 @@ public class Reader
 			}
 		}
 	}
-	
+	/*
 	public void commentTest() throws Exception
 	{
 		String s = "<!-- im a valid comment -->  <!--im invalid:((";
@@ -614,24 +848,35 @@ public class Reader
 		String s = "123.+2";
 		read(s.toCharArray());
 		printTest();
-	}
+	}*/
+
 	public void allTest() throws Exception
 	{
 		String s = allinLine;
 		read(s.toCharArray());
-		printTest();
+		outputToCSV(parseTokens());
+		//printTest();
 	}
+	
+	public void outputToCSV(String write)
+	{
+		try
+		{
+			FileWriter writer = new FileWriter("src\\text files\\test.csv");
+			writer.append(write);
+			writer.flush();
+			writer.close();
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	//public String TestCalculate
+	
 	public static void main(String args[]) throws Exception
 	{
-		Reader a = new Reader(args[0]);
+		Reader a = new Reader("src\\text files\\text.txt");
 		a.allTest();
-		/*
-		System.out.println(a.lexemes.size());
-		System.out.println(a.tokens.size());
-		for(int i = 0; i < a.lexemes.size(); i++)
-		{
-			System.out.println(a.lexemes.get(i));
-		}
-		*/
 	}
 }
