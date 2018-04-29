@@ -620,14 +620,19 @@ int count = 0;
 			//String lxm = lexemes.get(ctr);
 			if(tkn.equals("TAGIDENT"))
 			{
+				while(!tokens.get(count).equals("GTHAN"))
+				{
+					count++;
+					tkn = tokens.get(count);
+				}
 				out += tagOpen();
 			}
-			if(lexemes.get(count).equals("tr"))
+			else if(lexemes.get(count).equals("tr"))
 			{
 				
 				out += "\n";
 			}
-			if(lexemes.get(count).equals("td") && !lexemes.get(count+3).equals("tr"))
+			else if(lexemes.get(count).equals("td") && !lexemes.get(count+3).equals("tr"))
 			{
 				
 				out += ",";
@@ -660,6 +665,10 @@ int count = 0;
 			}
 			if(tokens.get(count).equals("TAGIDENT"))
 			{
+				while(!tokens.get(count).equals("GTHAN"))
+				{
+					count++;
+				}
 				count++;
 				concatenated += tagOpen();
 			}
@@ -745,56 +754,7 @@ String calculate(boolean bracketed)
 		return "" + result;
 	else
 		return expression;
-}
-
-/* To be placed inside calculate supposedly unless I'm able to fix it
-if(tokens.get(count).equals("NUMBER"))
-{
-	if(result == 0)
-		result = Float.parseFloat(lexemes.get(count));
-	switch(op)
-	{
-	case 0:
-		break;
-	case 1:
-		result += Float.parseFloat(lexemes.get(count));
-		break;
-	case 2:
-		result -= Float.parseFloat(lexemes.get(count));
-		break;
-	case 3:
-		result *= Float.parseFloat(lexemes.get(count));
-		break;
-	case 4:
-		result /= Float.parseFloat(lexemes.get(count));
-		break;
-	case 5:
-		float multiplier = result;
-		for(int ctr = 1; ctr < Integer.parseInt(lexemes.get(count)); ctr++)
-			result *= multiplier;
-		break;
-	}
-	op = 0;
-}
-switch(tokens.get(count))
-{
-case "PLUS":
-	op = 1;
-	break;
-case "MINUS":
-	op = 2;
-	break;
-case "MULT":
-	op = 3;
-	break;
-case "DIV":
-	op = 4;
-	break;
-case "EXP":
-	op = 5;
-	break;
-}*/
-	
+}	
 	
 	public void printTest() throws Exception
 	{
@@ -854,8 +814,8 @@ case "EXP":
 	{
 		String s = allinLine;
 		read(s.toCharArray());
-		outputToCSV(parseTokens());
 		//printTest();
+		outputToCSV(parseTokens());
 	}
 	
 	public void outputToCSV(String write)
@@ -863,6 +823,7 @@ case "EXP":
 		try
 		{
 			FileWriter writer = new FileWriter("src\\text files\\test.csv");
+			//System.out.println(write);
 			writer.append(write);
 			writer.flush();
 			writer.close();
@@ -871,8 +832,6 @@ case "EXP":
 			System.out.println(e.getMessage());
 		}
 	}
-	
-	//public String TestCalculate
 	
 	public static void main(String args[]) throws Exception
 	{

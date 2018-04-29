@@ -155,3 +155,51 @@ void operate(number)
 {
 	
 }
+
+/* To be placed inside calculate supposedly unless I'm able to fix it
+if(tokens.get(count).equals("NUMBER"))
+{
+	if(result == 0)
+		result = Float.parseFloat(lexemes.get(count));
+	switch(op)
+	{
+	case 0:
+		break;
+	case 1:
+		result += Float.parseFloat(lexemes.get(count));
+		break;
+	case 2:
+		result -= Float.parseFloat(lexemes.get(count));
+		break;
+	case 3:
+		result *= Float.parseFloat(lexemes.get(count));
+		break;
+	case 4:
+		result /= Float.parseFloat(lexemes.get(count));
+		break;
+	case 5:
+		float multiplier = result;
+		for(int ctr = 1; ctr < Integer.parseInt(lexemes.get(count)); ctr++)
+			result *= multiplier;
+		break;
+	}
+	op = 0;
+}
+switch(tokens.get(count))
+{
+case "PLUS":
+	op = 1;
+	break;
+case "MINUS":
+	op = 2;
+	break;
+case "MULT":
+	op = 3;
+	break;
+case "DIV":
+	op = 4;
+	break;
+case "EXP":
+	op = 5;
+	break;
+}*/
