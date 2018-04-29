@@ -629,12 +629,18 @@ int count = 0;
 			}
 			else if(lexemes.get(count).equals("tr"))
 			{
-				
+				while(!tokens.get(count).equals("GTHAN"))
+				{
+					count++;
+				}
 				out += "\n";
 			}
 			else if(lexemes.get(count).equals("td") && !lexemes.get(count+3).equals("tr"))
 			{
-				
+				while(!tokens.get(count).equals("GTHAN"))
+				{
+					count++;
+				}
 				out += ",";
 			}
 			if(tkn.equals("ERROR"))
@@ -823,7 +829,7 @@ String calculate(boolean bracketed)
 		try
 		{
 			FileWriter writer = new FileWriter("src\\text files\\test.csv");
-			//System.out.println(write);
+			System.out.println(write);
 			writer.append(write);
 			writer.flush();
 			writer.close();
